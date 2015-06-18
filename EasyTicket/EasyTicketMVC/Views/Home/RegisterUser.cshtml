@@ -1,0 +1,76 @@
+﻿@model EasyTicketLogic.User
+
+@using (Html.BeginForm())
+{
+    <div class="loader" style="display:none">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name)<br />
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Lastname)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Lastname) <br />
+        @Html.ValidationMessageFor(model => model.Lastname)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Login)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Login) <br />
+        @Html.ValidationMessageFor(model => model.Login)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Password)
+    </div>
+    <div class="editor-field">
+        @Html.PasswordFor(model => model.Password) <br />
+        @Html.ValidationMessageFor(model => model.Password)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Email)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Email) <br />
+        @Html.ValidationMessageFor(model => model.Email)
+    </div>
+    
+    <div class="editor-label">
+        <label>Would you like recieve e-mails from our service?</label>
+    </div>
+    
+    <div class="editor-field">
+        @Html.EditorFor(model => model.IsSignedForNewsletter)
+    </div>
+
+    <div class="editor-field" style="display: none;">
+        @Html.EditorFor(model => model.UserId)
+    </div>
+    <div class="editor-field" style="display: none;">
+        @Html.EditorFor(model => model.Avatar)
+    </div>
+
+    @*<div class="editor-field" style="display: none;">
+            @Html.EditorFor(model => model.Preferences)
+        </div>
+        <div class="editor-field" style="display: none;">
+            @Html.EditorFor(model => model.Role)
+        </div>
+        <div class="editor-field" style="display: none;">
+            @Html.EditorFor(model => model.Orders)
+        </div>*@
+
+
+}

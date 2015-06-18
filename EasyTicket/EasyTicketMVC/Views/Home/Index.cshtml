@@ -1,0 +1,175 @@
+﻿@using EasyTicketMVC.Helpers
+@model EasyTicketLogic.JourneyPreferences
+@{
+    ViewBag.Title = "EasyTicket";
+}
+<style>
+.centered {
+    width:300px;
+    height:300px;
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin:-50px 0 0 -50px;
+}
+    </style>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script>    
+    $(function () {
+        $("#datepicker").datepicker();
+    });
+
+    $(function(){
+        $('#searchFlightForm').submit(function () {
+            //alert('Handler for .submit() called.');
+            $("#datepicker").attr("readonly", "readonly");            
+            $("#searchFlightSubmitBtn").attr("disabled", "disabled");
+            $("#registerBtn").attr("disabled", "disabled");
+            $("#loginBtn").attr("disabled", "disabled");
+            $("#registerPrefBtn").attr("disabled", "disabled");
+            //$(":input").attr("disabled", "disabled");
+            $("#waiting").css('display', '');            
+        });
+    });   
+
+    var directionsDisplay;
+    var directionsService = new google.maps.DirectionsService();
+    var map;
+
+    function initialize() {
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        var warsaw = new google.maps.LatLng(52.222122, 21.007047000000057);
+        var mapOptions = {
+            zoom: 7,
+            center: warsaw
+        }
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        directionsDisplay.setMap(map);
+    }
+
+
+    function ShowRoute(depCity, arrCity) {
+
+        $(":input").attr("disabled", "disabled");
+        $("#waiting").css('display', '');
+
+        var start = depCity;
+        var end = arrCity;
+
+        var request = {
+            origin: start,
+            destination: end,
+            travelMode: google.maps.TravelMode.DRIVING
+        };
+        directionsService.route(request, function (response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+            }
+        });
+
+        $("#waiting").css('display', 'none');
+        $(":input").removeAttr('disabled');        
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+<div class="row">
+
+    <div class="col-md-4">
+        <img src="~/Content/logo.jpg" height="100" width="100" />
+    </div>
+    <div class="col-md-8">
+        <h1><span class="label label-primary">Easy Ticket application</span></h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                @using (Html.BeginForm("SearchFlight", "Home", FormMethod.Post, new { @class = "navbar-form navbar-left form-horizontal", @id = "searchFlightForm", @name = "searchFlightForm" }))
+                {
+                    <div class="control-group">
+                        <div class="controls form-inline">
+                            @Html.LabelFor(model => model.DepartureAddress.CityName)
+                            @{
+                    Dictionary<string, string> destinations = ViewBag.Destinations;
+                                <select class="selectpicker" id="depCityId" name="depCityId">
+                                    @foreach (var item in destinations)
+                                    {
+                                        <option value="@item.Key">@item.Value</option>
+                                    }
+                                </select>
+                                @Html.LabelFor(model => model.ArrivalAddress.CityName)
+                                <select class="selectpicker" id="arrCityId" name="arrCityId">
+                                    @foreach (var item in destinations)
+                                    {
+                                        <option value="@item.Key">@item.Value</option>
+                                    }
+                                </select>
+                            }
+                            @Html.LabelFor(model => model.DepartureDate)
+                            @Html.TextBoxFor(model => model.DepartureDate, new { @class = "datepicker", @id = "datepicker" })
+                            @Html.ValidationMessageFor(model => model.DepartureDate)
+                            @Html.LabelFor(model => model.MaxTotalPrice)
+                            @{Html.EnableClientValidation(false);}                
+                            @Html.EditorFor(model => model.MaxTotalPrice, new { @id = "maxTotalPrice" }) 
+                            @{Html.EnableClientValidation(true);}                            
+                            <input id="searchFlightSubmitBtn" type="submit" class="btn btn-primary" value="Search flight" />
+                        </div>
+                    </div>                    
+                }
+                @Html.DialogFormLink("RegisterPreferences", Url.Action("RegisterPreferences"), "RegisterPreferences", "bs-example-navbar-collapse-1", Url.Action("User"), "registerPrefBtn")
+                <div class="nav navbar-nav navbar-right">
+                    @Html.DialogFormLink("Login", Url.Action("LoginUser"), "LoginUser", "nav navbar-nav navbar-right", Url.Action("User"), "loginBtn")
+                    @Html.DialogFormLink("Register", Url.Action("RegisterUser"), "RegisterUser", "nav navbar-nav navbar-right", Url.Action("User"), "registerBtn")
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="list-group">
+            <table class="table table-hover" id="offerListTable">
+                <thead>
+                    <tr>
+                        <th>Departure city</th>
+                        <th>Arrival city</th>
+                        <th>Departure date</th>
+                        <th>Arrival date</th>
+                        <th>Total price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>                                       
+                    @{
+                        EasyTicketLogic.Journey journey = ViewBag.Journey;
+                        if (journey != null)
+                        {
+                            foreach (var offer in journey.Offers)
+                            {
+                        <tr>
+                            <td>@offer.DepartureAddress.CityName</td>
+                            <td>@offer.ArrivalAddress.CityName</td>
+                            <td>@offer.DepartureDate</td>
+                            <td>@offer.ArrivalDate</td>
+                            <td>@offer.TotalPrice</td>
+                            <td><button type="button" class="btn btn-primary" onclick="ShowRoute('@offer.DepartureAddress.CityName', '@offer.ArrivalAddress.CityName');">Show route</button></td>
+                        </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div id="map-canvas" style="height: 800px; margin-right: 10px;">
+            
+        </div>
+    </div>
+</div>
+<div id="waiting" style="display: none">
+    <img class="centered" src="http://careers.utc.com/Styles/Sites/UTS/images/preloader_transparent.gif"/>
+</div>

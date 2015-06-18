@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F960EE86-2778-4650-9F39-F381BF0D6BEA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EasyTicketLogic</RootNamespace>
+    <AssemblyName>EasyTicketLogic</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\..\EasyTicketWPFClient\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataAccess\DataAccessConfigurations\AddressConfiguration.cs" />
+    <Compile Include="DataAccess\DataAccessConfigurations\TicketConfiguration.cs" />
+    <Compile Include="DataAccess\DataAccessConfigurations\UserConfiguration.cs" />
+    <Compile Include="DataAccess\EasyTicketContext.cs" />
+    <Compile Include="Notifications\EmailNotification.cs" />
+    <Compile Include="Exceptions\ValidationException.cs" />
+    <Compile Include="Notifications\IUserNotificationStrategy.cs" />
+    <Compile Include="SearchJourneyStrategy\SearchJourneyStrategyFactory.cs" />
+    <Compile Include="SearchJourneyStrategy\NoChangeJourneyStrategy.cs" />
+    <Compile Include="SearchJourneyStrategy\SelectedTimeJourneyStrategy.cs" />
+    <Compile Include="Notifications\UserNotificationStrategyFactory.cs" />
+    <Compile Include="User\UserManagement.cs" />
+    <Compile Include="JourneySystemAdapter\IJourneySystemAdapter.cs" />
+    <Compile Include="JourneySystemAdapter\DBahnAdapter.cs" />
+    <Compile Include="Offer\Offer.cs" />
+    <Compile Include="JourneySystemAdapter\SkyScannerAdapter.cs" />
+    <Compile Include="JourneySystemAdapter\JourneySystemAdapterFactory.cs" />
+    <Compile Include="Ticket\Ticket.cs" />
+    <Compile Include="Utils\Address.cs" />
+    <Compile Include="Controllers\Register.cs" />
+    <Compile Include="SearchJourneyStrategy\ISearchJourneyStrategy.cs" />
+    <Compile Include="Journey\Journey.cs" />
+    <Compile Include="Journey\JourneyPreferences.cs" />
+    <Compile Include="Order\OrderDetails.cs" />
+    <Compile Include="User\User.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User\UserPreferences.cs" />
+    <Compile Include="User\UserRole.cs" />
+    <Compile Include="Utils\Encode.cs" />
+    <Compile Include="Utils\GPSCoordinates.cs" />
+    <Compile Include="Utils\Web.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

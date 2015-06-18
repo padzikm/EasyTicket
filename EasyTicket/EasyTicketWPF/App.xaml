@@ -1,0 +1,29 @@
+﻿<Application x:Class="EasyTicketWPFClient.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:bing="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+
+
+        <Color x:Key="Coffee">#7B4714</Color>
+        <Color x:Key="SeaShell">#FFF5EE</Color>
+        <SolidColorBrush x:Key="AppColor" Color="{StaticResource Coffee}"></SolidColorBrush>
+        <SolidColorBrush x:Key="ControlColor" Color="{StaticResource SeaShell}"></SolidColorBrush>
+
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="#FFF5EE"/>
+        </Style> 
+        
+        <Style x:Key="AddNewOfferStyle" TargetType="TextBox">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Height" Value="23"/>
+            <Setter Property="Width" Value="170"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Background" Value="{StaticResource ControlColor}"/>
+        </Style>        
+
+        <bing:ApplicationIdCredentialsProvider x:Key="MyCredentials" ApplicationId="AiD8uHD5-9OrFBKa-Bg4gdpJiFbcV_CUhsmUIhTB7sO-_MsRKMH3sxFg_3DgPhBG" />        
+    </Application.Resources>
+</Application>

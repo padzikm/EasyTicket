@@ -1,0 +1,64 @@
+﻿@model EasyTicketLogic.UserPreferences
+
+@using (Html.BeginForm())
+{
+    <div class="editor-label">
+        @Html.LabelFor(model => model.DepartureDate)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.DepartureDate, new { @class = "datepicker" }) <br />
+        @Html.ValidationMessageFor(model => model.DepartureDate)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ArrivalDate)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.ArrivalDate, new { @class = "datepicker" }) <br />
+        @Html.ValidationMessageFor(model => model.ArrivalDate)
+    </div>
+
+    <div class="editor-label">
+        <label>Departure address</label>
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.DepartureAddress.CityName, EasyTicketMVC.Controllers.HomeController.selectList) <br />
+        @Html.ValidationMessageFor(model => model.DepartureAddress.CityName)
+    </div>
+
+    @*<div class="editor-label">
+        <label>Arrival adress</label>
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.DepartureAddress.CityName, EasyTicketMVC.Controllers.HomeController.selectList) <br />
+        @Html.ValidationMessageFor(model => model.DepartureAddress.CityName)
+    </div>*@
+    <div class="editor-label">
+        @Html.LabelFor(model => model.NumberOfAdults)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NumberOfAdults) <br />
+        @Html.ValidationMessageFor(model => model.NumberOfAdults)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.NumberOfChildren)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NumberOfChildren) <br />
+        @Html.ValidationMessageFor(model => model.NumberOfChildren)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.NumberOfInfants)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.NumberOfInfants) <br />
+        @Html.ValidationMessageFor(model => model.NumberOfInfants)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.PreferDirectedRoutes)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.PreferDirectedRoutes) <br />
+        @Html.ValidationMessageFor(model => model.PreferDirectedRoutes)
+    </div>
+}

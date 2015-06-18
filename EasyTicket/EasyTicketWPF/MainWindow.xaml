@@ -1,0 +1,204 @@
+﻿<Window x:Class="EasyTicketWPFClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Easy Ticket" Height="593" Width="1611"
+        xmlns:core="clr-namespace:EasyTicketWPFClient"
+        xmlns:route="clr-namespace:EasyTicketWPFClient.RouteCalc"
+        xmlns:bing="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+        xmlns:tb="http://www.hardcodet.net/taskbar" 
+        xmlns:local="clr-namespace:ThreadingComponent;assembly=WpfControlLibrary1"
+        Background="{StaticResource AppColor}" WindowState="Maximized" Icon="logo.jpg" Loaded="Window_Loaded" >
+    <Window.Resources>
+        <DataTemplate x:Key="RouteTemplate">
+            <Ellipse Width="12" Height="12" Fill="Red" Opacity="0.8"
+                bing:MapLayer.Position="{Binding Location}"
+                bing:MapLayer.PositionOrigin="Center"
+                Tag="{Binding}"
+                MouseEnter="Route_MouseEnter"
+                MouseLeave="Route_MouseLeave" />
+        </DataTemplate>
+
+        <ContextMenu x:Key="NotifierContextMenu" Placement="MousePoint">
+            <MenuItem Header="Exit" />
+        </ContextMenu>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="95*"/>
+            <ColumnDefinition Width="219*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="42*"/>
+            <RowDefinition Height="16*"/>
+            <RowDefinition Height="223*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal"
+                    Margin="0,0,10,14"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Left">
+            <Image Source="logo.jpg"
+                   Width="113"
+                   HorizontalAlignment="Left" Opacity="0.7">
+            </Image>
+
+            <TextBlock Text="Easy Ticket"
+                       
+                       FontSize="32"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontFamily="Georgia"/>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal" Margin="0,10,0,0" Grid.RowSpan="2" Grid.Column="1" Height="79" Width="426">
+            <TextBlock x:Name="userName" 
+        		Text="User Name"
+        		HorizontalAlignment="Right"
+        		Margin="13,27,0,27"
+                
+                FontSize="18"/>
+            <Button x:Name="registerPrefsButton"
+        		Content="Add Preferences"
+        		Margin="30,27,0,27"
+        		Width="93"
+        		Height="25"
+        		Click="registerPrefsButton_Click"
+                />
+            <Button x:Name="logInButton"
+        		Content="Sign in"
+        		Margin="30,20,0,20"
+        		Width="75"
+        		Height="25"
+        		Click="LogInButtonClick"
+                />
+            <Button x:Name="registerButton"
+            	Content="Register"
+            	Margin="30,20,0,20"
+            	Width="75"
+            	Height="25"
+            	Click="RegisterButtonClick"
+                />
+
+        </StackPanel>
+
+        <StackPanel Margin="10,5,0,2" Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2">
+            <TextBlock Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center">From</TextBlock>
+            <TextBox x:Name="depAddress"
+                     Margin="10,0,0,0"
+                     Height="0"
+                     Width="0"
+                     Text="{Binding From, UpdateSourceTrigger=PropertyChanged}"                     
+                     Visibility="Collapsed"
+                     />
+            <ComboBox x:Name="skad" VerticalAlignment="Center" HorizontalAlignment="Center"  Width="100" Height="20"/>
+            <TextBlock VerticalAlignment="Center" Margin="10,0,10,0">To</TextBlock>
+            <TextBox x:Name="arrAddress"
+                     Margin="10,0,10,0" 
+                     Height="0"
+                     Width="0"
+                     Text="{Binding To, UpdateSourceTrigger=PropertyChanged}"
+                     Visibility="Collapsed"
+                     />
+            <ComboBox x:Name="dokad" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100" Height="20"/>
+            <TextBlock VerticalAlignment="Center" Margin="0,5,0,4" Visibility="Collapsed"><Run Text="Dep date"/></TextBlock>
+            <TextBox x:Name="depDate1"
+                     Margin="20,0,0,0"
+                     Height="20" 
+                     Width="100"
+                     Text="dd-mm-yyyy"
+                     Visibility="Collapsed"
+                     />
+            <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" Visibility="Collapsed" >Arr date</TextBlock>
+            <TextBox x:Name="arrDate1"
+                     Margin="20,0,0,0"
+                     Height="20"
+                     Width="100"
+                     Visibility="Collapsed"
+                     />
+            <TextBlock Margin="10,0,0,0" VerticalAlignment="Center">Dep date</TextBlock>
+            <DatePicker x:Name="depDate"
+                        Margin="20,2,0,0"
+                        Width="100"/>
+            <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" >Arr date</TextBlock>
+            <DatePicker x:Name="arrDate"
+                        Margin="20,2,0,0"
+                        Width="100"/>
+            <Label Content="Max total price" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            <TextBox x:Name="maxPriceTextbox" HorizontalAlignment="Left" Height="23" Margin="10,0,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="120" Grid.ColumnSpan="2"/>
+            <Button x:Name="searchButton"
+                    Margin="40,0,0,0"
+                    Content="Search"
+                    Width="75"
+                    Click="SearchButtonClick"
+                    />
+            <Button x:Name="addOfferButton"
+                    Margin="40,0,0,0"
+                    Content="Add offer"
+                    Width="75"
+                    Click="AddOfferButtonClick"
+                    />
+            <Button Content="Map It" IsDefault="True" Visibility="Collapsed"
+                    Margin="20,0,0,0"
+                    Width="75"
+                    Command="{Binding GeocodeAddressCommand}"
+                    CommandParameter="{Binding Text,ElementName=depAddress}"/>
+            <Button x:Name="searchRoute" Visibility="Collapsed"
+                    Content="Get Route"
+                    Margin="20,0,0,0"
+                    Width="75"
+                    Command="{Binding CalculateRouteCommand}"/>
+            <Button Content="Zoom in"
+                    Margin="20,0,0,0"
+                    Width="75"
+                    Click="Button_Click_2"
+                    />
+            <Button Content="Zoom out"
+                    Margin="20,0,0,0"
+                    Width="75"
+                    Click="Button_Click_1"/>
+        </StackPanel>
+
+        <bing:Map 
+                  x:Name="map"
+                  Margin="10,3,-2,0" 
+                  Center="52.14,21.1"
+                  Grid.Row="2" Grid.Column="1"
+                  ZoomLevel="4"                  
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AnimationLevel="Full"
+                  core:MapInteractivity.GeocodeResult="{Binding GeocodeResult}"
+                  route:MapInteractivity.RouteResult="{Binding RouteResult}"
+                  route:MapInteractivity.RouteLineLayer="{Binding ElementName=RouteLineLayer}"            
+                  CredentialsProvider="{StaticResource MyCredentials}" >
+            <bing:MapLayer x:Name="RouteLineLayer" />
+            <bing:MapLayer>
+                <bing:MapItemsControl ItemsSource="{Binding Directions}" ItemTemplate="{StaticResource RouteTemplate}"/>
+            </bing:MapLayer>
+            <bing:MapLayer x:Name="ContentPopupLayer">
+                <Grid x:Name="ContentPopup" Visibility="Collapsed" Background="White">
+                    <StackPanel Margin="15">
+                        <TextBlock x:Name="ContentPopupText" FontSize="12" FontWeight="Bold" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </bing:MapLayer>
+        </bing:Map>
+
+        <TextBlock Text="Offers"
+                   TextAlignment="Center"
+                   Margin="10,30,9.333,395"
+                   Grid.Row="2"
+                   />
+
+        <ListView x:Name="offerListView"
+                  Margin="10,56,9.333,10"
+                  Grid.Row="2"                  
+                  SelectionChanged="connectionListView_SelectionChanged_1"
+                  />
+
+        <Viewbox x:Name="waitingViewBox" Visibility="Hidden"
+                 Grid.Column="0"
+                 Grid.Row="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            <local:CircularProgressBar />
+        </Viewbox>
+    </Grid> 
+</Window>
